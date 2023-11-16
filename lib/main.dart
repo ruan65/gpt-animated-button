@@ -24,8 +24,7 @@ class ColorFillButton extends StatefulWidget {
   _ColorFillButtonState createState() => _ColorFillButtonState();
 }
 
-class _ColorFillButtonState extends State<ColorFillButton>
-    with TickerProviderStateMixin {
+class _ColorFillButtonState extends State<ColorFillButton> with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _widthAnimation;
 
@@ -33,12 +32,18 @@ class _ColorFillButtonState extends State<ColorFillButton>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      vsync: this,
       duration: Duration(seconds: 1),
+      vsync: this,
     );
+
     _widthAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller)
       ..addListener(() {
         setState(() {});
+      })
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          print('Успех');
+        }
       });
   }
 
@@ -57,38 +62,38 @@ class _ColorFillButtonState extends State<ColorFillButton>
       onLongPressUp: () {
         _controller.reverse();
       },
-      child: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          Container(
-            width: 200,
-            height: 50,
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(10),
+      child: Container(
+        width: 200,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            AnimatedBuilder(
+              animation: _widthAnimation,
+              builder: (context, child) {
+                return Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    width: 200 * _widthAnimation.value,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                );
+              },
             ),
-            alignment: Alignment.center,
-          ),
-          Positioned(
-            left: 0,
-            top: 0,
-            bottom: 0,
-            child: Container(
-              width: 200 * _widthAnimation.value,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-          ),
-          Positioned(
-            child: Text(
+            Text(
               'Press and Hold',
               style: TextStyle(color: Colors.white),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
