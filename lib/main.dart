@@ -58,6 +58,7 @@ class _ColorFillButtonState extends State<ColorFillButton>
         _controller.reverse();
       },
       child: Stack(
+        alignment: Alignment.center,
         children: <Widget>[
           Container(
             width: 200,
@@ -67,10 +68,6 @@ class _ColorFillButtonState extends State<ColorFillButton>
               borderRadius: BorderRadius.circular(10),
             ),
             alignment: Alignment.center,
-            child: Text(
-              'Press and Hold',
-              style: TextStyle(color: Colors.white),
-            ),
           ),
           Positioned(
             left: 0,
@@ -85,6 +82,12 @@ class _ColorFillButtonState extends State<ColorFillButton>
               ),
             ),
           ),
+          Positioned(
+            child: Text(
+              'Press and Hold',
+              style: TextStyle(color: Colors.white),
+            ),
+          )
         ],
       ),
     );
